@@ -1,0 +1,502 @@
+<div class="bg-[#090909] text-[#F7F4ED] min-h-screen pb-24">
+  <!-- Account Hero Strip -->
+  <section class="py-12 bg-[#121212] border-b border-[#C8A45D]/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <div class="w-16 h-16 rounded-2xl bg-[#1c1c1c] border border-[#C8A45D]/40 flex items-center justify-center text-[#C8A45D] font-serif text-2xl font-bold shadow-lg">
+          {{ state.currentUser().fullName.charAt(0) }}
+        </div>
+        <div>
+          <div class="text-[10px] uppercase tracking-widest text-[#C8A45D] font-bold">
+            {{ state.currentUser().tier }}
+          </div>
+          <h1 class="font-serif text-2xl sm:text-3xl font-bold text-white">{{ state.currentUser().fullName }}</h1>
+          <div class="text-xs text-[#F7F4ED]/60 flex items-center gap-2 mt-0.5">
+            <span>{{ state.currentUser().email }}</span>
+            <span>·</span>
+            <span>Member Since {{ state.currentUser().joinedDate }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        @if (state.isAdmin()) {
+          <a routerLink="/admin" class="px-4 py-2.5 rounded-lg bg-[#C8A45D] text-[#090909] font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 shadow-md">
+            <mat-icon class="text-base">admin_panel_settings</mat-icon>
+            <span>Open Admin Console</span>
+          </a>
+        }
+        <button 
+          (click)="state.switchUser(state.isAdmin() ? 'customer' : 'admin')"
+          class="px-4 py-2.5 rounded-lg border border-[#C8A45D]/40 text-[#C8A45D] hover:bg-[#C8A45D]/10 text-xs font-semibold">
+          Switch to {{ state.isAdmin() ? 'VIP Customer' : 'Administrator' }}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Account Navigation Tabs -->
+  <section class="border-b border-white/10 bg-[#0c0c0c] sticky top-20 z-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center gap-2 overflow-x-auto py-2 scrollbar-none text-xs">
+      <button 
+        (click)="activeTab.set('bookings')"
+        class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors flex items-center gap-1.5"
+        [class.bg-[#C8A45D]]="activeTab() === 'bookings'"
+        [class.text-[#090909]]="activeTab() === 'bookings'"
+        [class.font-bold]="activeTab() === 'bookings'"
+        [class.text-[#F7F4ED]/70]="activeTab() !== 'bookings'">
+        <mat-icon class="text-sm">directions_car</mat-icon>
+        <span>Vehicle Reservations ({{ state.vehicleBookings().length }})</span>
+      </button>
+
+      <button 
+        (click)="activeTab.set('spa')"
+        class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors flex items-center gap-1.5"
+        [class.bg-[#C8A45D]]="activeTab() === 'spa'"
+        [class.text-[#090909]]="activeTab() === 'spa'"
+        [class.font-bold]="activeTab() === 'spa'"
+        [class.text-[#F7F4ED]/70]="activeTab() !== 'spa'">
+        <mat-icon class="text-sm">spa</mat-icon>
+        <span>Spa Appointments ({{ state.spaReservations().length }})</span>
+      </button>
+
+      <button 
+        (click)="activeTab.set('orders')"
+        class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors flex items-center gap-1.5"
+        [class.bg-[#C8A45D]]="activeTab() === 'orders'"
+        [class.text-[#090909]]="activeTab() === 'orders'"
+        [class.font-bold]="activeTab() === 'orders'"
+        [class.text-[#F7F4ED]/70]="activeTab() !== 'orders'">
+        <mat-icon class="text-sm">receipt_long</mat-icon>
+        <span>Watch Orders & Invoices ({{ state.orders().length }})</span>
+      </button>
+
+      <button 
+        (click)="activeTab.set('shipments')"
+        class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors flex items-center gap-1.5"
+        [class.bg-[#C8A45D]]="activeTab() === 'shipments'"
+        [class.text-[#090909]]="activeTab() === 'shipments'"
+        [class.font-bold]="activeTab() === 'shipments'"
+        [class.text-[#F7F4ED]/70]="activeTab() !== 'shipments'">
+        <mat-icon class="text-sm">local_shipping</mat-icon>
+        <span>Active Shipments</span>
+      </button>
+
+      <button 
+        (click)="activeTab.set('wishlist')"
+        class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors flex items-center gap-1.5"
+        [class.bg-[#C8A45D]]="activeTab() === 'wishlist'"
+        [class.text-[#090909]]="activeTab() === 'wishlist'"
+        [class.font-bold]="activeTab() === 'wishlist'"
+        [class.text-[#F7F4ED]/70]="activeTab() !== 'wishlist'">
+        <mat-icon class="text-sm">favorite</mat-icon>
+        <span>Saved Wishlist ({{ state.wishlist().length }})</span>
+      </button>
+
+      <button 
+        (click)="activeTab.set('profile')"
+        class="px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors flex items-center gap-1.5"
+        [class.bg-[#C8A45D]]="activeTab() === 'profile'"
+        [class.text-[#090909]]="activeTab() === 'profile'"
+        [class.font-bold]="activeTab() === 'profile'"
+        [class.text-[#F7F4ED]/70]="activeTab() !== 'profile'">
+        <mat-icon class="text-sm">person</mat-icon>
+        <span>Profile Credentials</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- TAB CONTENTS -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+    <!-- TAB 1: VEHICLE BOOKINGS -->
+    @if (activeTab() === 'bookings') {
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-serif text-2xl font-bold">Executive Mobility Bookings</h3>
+          <a routerLink="/luxury-cars" class="text-xs text-[#C8A45D] hover:underline flex items-center gap-1">
+            <mat-icon class="text-sm">add</mat-icon>
+            Book Another Vehicle
+          </a>
+        </div>
+
+        @if (state.vehicleBookings().length === 0) {
+          <div class="p-12 text-center luxury-card rounded-2xl space-y-3">
+            <mat-icon class="text-4xl text-[#C8A45D]/40">directions_car</mat-icon>
+            <div class="font-serif text-lg">No active car reservations.</div>
+            <a routerLink="/luxury-cars" class="inline-block mt-2 px-5 py-2 rounded-lg bg-[#C8A45D] text-[#090909] text-xs font-bold uppercase">Browse Fleet</a>
+          </div>
+        } @else {
+          <div class="space-y-4">
+            @for (b of state.vehicleBookings(); track b.id) {
+              <div class="luxury-card rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                  <img [src]="b.vehicleImage" [alt]="b.vehicleName" class="w-24 h-16 rounded-xl object-cover border border-white/10 shrink-0" />
+                  <div>
+                    <div class="text-[10px] uppercase tracking-wider text-[#C8A45D] font-mono">Reference: {{ b.id }}</div>
+                    <h4 class="font-serif text-xl font-bold text-white">{{ b.vehicleName }}</h4>
+                    <p class="text-xs text-[#F7F4ED]/60 mt-0.5">
+                      {{ b.pickupLocation }} &rarr; {{ b.destination }}
+                    </p>
+                    <div class="text-[11px] text-[#F7F4ED]/40 mt-1">
+                      Dates: {{ b.pickupDate }} to {{ b.returnDate }} · Configuration: {{ b.driveType === 'chauffeur' ? 'Executive Chauffeur' : 'Self-Drive' }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="flex items-center justify-between md:flex-col md:items-end gap-2 border-t md:border-t-0 pt-4 md:pt-0 border-white/5">
+                  <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                        [class.bg-emerald-950]="b.status === 'Confirmed'"
+                        [class.text-emerald-400]="b.status === 'Confirmed'"
+                        [class.bg-amber-950]="b.status === 'Pending Verification'"
+                        [class.text-amber-400]="b.status === 'Pending Verification'"
+                        [class.bg-red-950]="b.status === 'Cancelled'"
+                        [class.text-red-400]="b.status === 'Cancelled'">
+                    {{ b.status }}
+                  </span>
+                  @if (b.estimatedTotal) {
+                    <div class="font-serif font-bold text-lg text-[#C8A45D] tabular-nums">
+                      ${{ b.estimatedTotal.toLocaleString() }}
+                    </div>
+                  }
+                  @if (b.status !== 'Cancelled') {
+                    <button (click)="cancelCarBooking(b.id)" class="text-[11px] text-red-400 hover:underline">
+                      Cancel Booking
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- TAB 2: SPA APPOINTMENTS -->
+    @if (activeTab() === 'spa') {
+      <div class="space-y-6">
+        <div class="flex items-center justify-between">
+          <h3 class="font-serif text-2xl font-bold">Umuahia Sanctuary Spa Appointments</h3>
+          <a routerLink="/spa-wellness" class="text-xs text-[#C8A45D] hover:underline flex items-center gap-1">
+            <mat-icon class="text-sm">add</mat-icon>
+            Book Spa Treatment
+          </a>
+        </div>
+
+        @if (state.spaReservations().length === 0) {
+          <div class="p-12 text-center luxury-card rounded-2xl space-y-3">
+            <mat-icon class="text-4xl text-[#C8A45D]/40">spa</mat-icon>
+            <div class="font-serif text-lg">No active spa appointments scheduled.</div>
+            <a routerLink="/spa-wellness" class="inline-block mt-2 px-5 py-2 rounded-lg bg-[#C8A45D] text-[#090909] text-xs font-bold uppercase">Reserve Treatment</a>
+          </div>
+        } @else {
+          <div class="space-y-4">
+            @for (res of state.spaReservations(); track res.id) {
+              <div class="luxury-card rounded-2xl p-6 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                  <div class="text-[10px] uppercase tracking-wider text-[#C8A45D] font-mono">Sanctuary Ref: {{ res.id }}</div>
+                  <h4 class="font-serif text-xl font-bold text-white">{{ res.treatmentName }}</h4>
+                  <p class="text-xs text-[#F7F4ED]/60 mt-0.5">
+                    Date: {{ res.date }} at {{ res.time }} ({{ res.durationMinutes }} Min) · Suite: {{ res.guestType }}
+                  </p>
+                  <p class="text-[11px] text-[#F7F4ED]/40 mt-1">
+                    Therapist: {{ res.therapistPreference }} · Location: Store 5, 53 Awolowo St, Umuahia
+                  </p>
+                </div>
+
+                <div class="flex items-center justify-between md:flex-col md:items-end gap-2 border-t md:border-t-0 pt-4 md:pt-0 border-white/5">
+                  <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                        [class.bg-emerald-950]="res.status === 'Confirmed'"
+                        [class.text-emerald-400]="res.status === 'Confirmed'"
+                        [class.bg-amber-950]="res.status === 'Pending'"
+                        [class.text-amber-400]="res.status === 'Pending'"
+                        [class.bg-red-950]="res.status === 'Cancelled'"
+                        [class.text-red-400]="res.status === 'Cancelled'">
+                    {{ res.status }}
+                  </span>
+                  <div class="font-serif font-bold text-lg text-[#C8A45D] tabular-nums">
+                    ${{ res.price }}
+                  </div>
+                  @if (res.status !== 'Cancelled') {
+                    <button (click)="cancelSpaReservation(res.id)" class="text-[11px] text-red-400 hover:underline">
+                      Cancel Reservation
+                    </button>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- TAB 3: WATCH ORDERS & INVOICES -->
+    @if (activeTab() === 'orders') {
+      <div class="space-y-6">
+        <h3 class="font-serif text-2xl font-bold">Watch Acquisitions & Official Invoices</h3>
+
+        @if (state.orders().length === 0) {
+          <div class="p-12 text-center luxury-card rounded-2xl space-y-3">
+            <mat-icon class="text-4xl text-[#C8A45D]/40">receipt</mat-icon>
+            <div class="font-serif text-lg">No orders recorded yet.</div>
+            <a routerLink="/luxury-watches" class="inline-block mt-2 px-5 py-2 rounded-lg bg-[#C8A45D] text-[#090909] text-xs font-bold uppercase">Browse Watches</a>
+          </div>
+        } @else {
+          <div class="space-y-4">
+            @for (ord of state.orders(); track ord.id) {
+              <div class="luxury-card rounded-2xl p-6 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-4">
+                  <div>
+                    <span class="text-[10px] text-[#C8A45D] uppercase tracking-wider font-mono">{{ ord.orderNumber }}</span>
+                    <h4 class="font-serif text-lg font-bold">Invoice {{ ord.invoiceNumber }}</h4>
+                    <span class="text-[11px] text-[#F7F4ED]/50">{{ ord.createdAt | slice:0:10 }}</span>
+                  </div>
+                  <div class="flex items-center gap-4">
+                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-400">
+                      {{ ord.paymentStatus }}
+                    </span>
+                    <div class="font-serif font-bold text-xl text-[#C8A45D] tabular-nums">
+                      ${{ ord.total.toLocaleString() }}
+                    </div>
+                  </div>
+                </div>
+
+                <div class="space-y-3">
+                  @for (item of ord.items; track item.watchId) {
+                    <div class="flex items-center gap-4 text-xs">
+                      <img [src]="item.image" [alt]="item.model" class="w-12 h-12 rounded object-cover border border-white/10" />
+                      <div class="flex-1 min-w-0">
+                        <strong class="text-white block truncate">{{ item.brand }} {{ item.model }}</strong>
+                        <span class="text-[#F7F4ED]/50">Ref: {{ item.referenceNumber }} · Qty: {{ item.quantity }}</span>
+                      </div>
+                      <span class="font-mono text-sm text-[#C8A45D] tabular-nums">${{ (item.unitPrice * item.quantity).toLocaleString() }}</span>
+                    </div>
+                  }
+                </div>
+
+                <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs">
+                  <span class="text-[#F7F4ED]/60">Destination: {{ ord.shippingAddress.city }}, {{ ord.shippingAddress.country }}</span>
+                  <button (click)="viewInvoice(ord)" class="px-4 py-1.5 rounded-lg border border-[#C8A45D]/40 text-[#C8A45D] hover:bg-[#C8A45D]/10 font-medium">
+                    View Formal PDF Invoice
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- TAB 4: ACTIVE SHIPMENTS -->
+    @if (activeTab() === 'shipments') {
+      <div class="space-y-6">
+        <h3 class="font-serif text-2xl font-bold">Active Cargo & Parcel Consignments</h3>
+        <div class="space-y-4">
+          @for (s of state.shipments(); track s.trackingNumber) {
+            <div class="luxury-card rounded-2xl p-6 space-y-3">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <span class="text-[10px] text-[#C8A45D] uppercase tracking-wider font-mono">Consignment #{{ s.trackingNumber }}</span>
+                  <h4 class="font-serif text-lg font-bold text-white">{{ s.serviceType }}</h4>
+                  <div class="text-xs text-[#F7F4ED]/60">{{ s.origin }} &rarr; {{ s.destination }}</div>
+                </div>
+                <div class="text-right">
+                  <span class="px-3 py-1 rounded-full text-xs font-semibold bg-emerald-950 text-emerald-400">
+                    {{ s.currentStage }}
+                  </span>
+                  <div class="text-[11px] text-[#F7F4ED]/50 mt-1">Weight: {{ s.weightKg }} KG</div>
+                </div>
+              </div>
+              <div class="text-xs text-[#DFBF7A] bg-black/40 p-2.5 rounded-lg border border-white/5">
+                Latest Event: {{ s.history[s.history.length - 1].notes }}
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- TAB 5: WISHLIST -->
+    @if (activeTab() === 'wishlist') {
+      <div class="space-y-6">
+        <h3 class="font-serif text-2xl font-bold">Private Watch Wishlist ({{ state.wishlist().length }})</h3>
+
+        @if (state.wishlist().length === 0) {
+          <div class="p-12 text-center luxury-card rounded-2xl space-y-3">
+            <mat-icon class="text-4xl text-[#C8A45D]/40">favorite_border</mat-icon>
+            <div class="font-serif text-lg">Your private wishlist is empty.</div>
+            <a routerLink="/luxury-watches" class="inline-block mt-2 px-5 py-2 rounded-lg bg-[#C8A45D] text-[#090909] text-xs font-bold uppercase">Explore Timepieces</a>
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @for (wId of state.wishlist(); track wId) {
+              @if (getWatchById(wId); as watch) {
+                <div class="luxury-card rounded-2xl p-4 flex gap-4 items-center">
+                  <img [src]="watch.image" [alt]="watch.model" class="w-20 h-20 rounded-xl object-cover shrink-0" />
+                  <div class="flex-1 min-w-0">
+                    <div class="text-[10px] text-[#C8A45D] uppercase font-bold">{{ watch.brand }}</div>
+                    <h5 class="font-serif font-bold text-sm text-white truncate">{{ watch.model }}</h5>
+                    <div class="text-xs text-[#C8A45D] font-bold tabular-nums">
+                      {{ watch.priceUsd ? ('$' + watch.priceUsd.toLocaleString()) : 'Quote' }}
+                    </div>
+                    <div class="flex items-center gap-2 mt-2">
+                      <button (click)="state.addToCart(watch)" class="px-2.5 py-1 rounded bg-[#C8A45D] text-[#090909] text-[10px] font-bold uppercase">
+                        Add to Cart
+                      </button>
+                      <button (click)="removeFromWishlist(watch.id)" class="text-[10px] text-red-400 hover:underline">
+                        Remove
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        }
+      </div>
+    }
+
+    <!-- TAB 6: PROFILE -->
+    @if (activeTab() === 'profile') {
+      <div class="max-w-2xl mx-auto luxury-card rounded-2xl p-8 space-y-6">
+        <div class="border-b border-white/10 pb-4">
+          <h3 class="font-serif text-2xl font-bold">Profile Credentials & Currency</h3>
+          <p class="text-xs text-[#F7F4ED]/60 mt-1">Manage your verified executive account and client settings.</p>
+        </div>
+
+        <form [formGroup]="profileForm" (ngSubmit)="updateProfile()" class="space-y-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Full Legal Name *</label>
+            <input type="text" formControlName="fullName" class="w-full px-3 py-2.5 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Email Address *</label>
+              <input type="email" formControlName="email" class="w-full px-3 py-2.5 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none" />
+            </div>
+
+            <div>
+              <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Phone Number *</label>
+              <input type="tel" formControlName="phone" class="w-full px-3 py-2.5 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Preferred Settlement Currency</label>
+            <select formControlName="preferredCurrency" class="w-full px-3 py-2.5 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none">
+              <option value="USD">USD - United States Dollar (Default)</option>
+              <option value="NGN">NGN - Nigerian Naira</option>
+              <option value="EUR">EUR - Euro</option>
+              <option value="GBP">GBP - British Pound</option>
+            </select>
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" [disabled]="profileForm.invalid" class="px-6 py-2.5 rounded-xl bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider">
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    }
+  </section>
+
+  <!-- FORMAL INVOICE MODAL -->
+  @if (viewingInvoice(); as inv) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div class="fixed inset-0 bg-black/85 backdrop-blur-md" (click)="closeInvoice()"></div>
+
+      <div class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-[#141414] border border-[#C8A45D]/40 shadow-2xl p-8 text-[#F7F4ED] z-10 animate-in fade-in">
+        <!-- Invoice Header -->
+        <div class="flex items-start justify-between border-b border-[#C8A45D]/30 pb-6 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-[#1c1c1c] border border-[#C8A45D]/40 p-1 flex items-center justify-center">
+              <img src="/images/peachy_logo.svg" alt="Logo" class="w-full h-full object-contain" />
+            </div>
+            <div>
+              <h3 class="font-serif text-xl font-bold">PEACHY HOLDING ENTERPRISE</h3>
+              <p class="text-[10px] text-[#C8A45D] uppercase tracking-widest">Official Transaction Document</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="font-mono text-xs font-bold text-[#C8A45D]">{{ inv.invoiceNumber }}</div>
+            <div class="text-[11px] text-[#F7F4ED]/60">{{ inv.createdAt | slice:0:10 }}</div>
+          </div>
+        </div>
+
+        <!-- Addresses -->
+        <div class="grid grid-cols-2 gap-4 text-xs mb-6 border-b border-white/5 pb-4">
+          <div>
+            <span class="text-[10px] text-[#C8A45D] uppercase tracking-wider block">Billed & Shipped To:</span>
+            <strong class="text-white block mt-1">{{ inv.shippingAddress.fullName }}</strong>
+            <p class="text-[#F7F4ED]/70">{{ inv.shippingAddress.street }}, {{ inv.shippingAddress.city }}</p>
+            <p class="text-[#F7F4ED]/70">{{ inv.shippingAddress.country }} · {{ inv.shippingAddress.phone }}</p>
+          </div>
+          <div class="text-right">
+            <span class="text-[10px] text-[#C8A45D] uppercase tracking-wider block">Enterprise Authority:</span>
+            <strong class="text-white block mt-1">Peachy Horology Vault</strong>
+            <p class="text-[#F7F4ED]/70">Zurich · London · Abuja · Umuahia</p>
+            <p class="text-[#F7F4ED]/70">Payment Status: <strong class="text-emerald-400">{{ inv.paymentStatus }}</strong></p>
+          </div>
+        </div>
+
+        <!-- Line Items -->
+        <div class="space-y-3 mb-6">
+          <table class="w-full text-xs text-left">
+            <thead>
+              <tr class="border-b border-white/10 text-[#F7F4ED]/50 uppercase text-[10px]">
+                <th class="py-2">Item / Specification</th>
+                <th class="py-2 text-center">Qty</th>
+                <th class="py-2 text-right">Unit Price</th>
+                <th class="py-2 text-right">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (it of inv.items; track it.watchId) {
+                <tr class="border-b border-white/5">
+                  <td class="py-3">
+                    <strong class="text-white block">{{ it.brand }} {{ it.model }}</strong>
+                    <span class="text-[10px] text-[#F7F4ED]/50 font-mono">Ref: {{ it.referenceNumber }}</span>
+                  </td>
+                  <td class="py-3 text-center tabular-nums">{{ it.quantity }}</td>
+                  <td class="py-3 text-right tabular-nums font-mono">${{ it.unitPrice.toLocaleString() }}</td>
+                  <td class="py-3 text-right tabular-nums font-mono text-[#C8A45D]">${{ (it.unitPrice * it.quantity).toLocaleString() }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Invoice Total -->
+        <div class="flex justify-end border-t border-[#C8A45D]/20 pt-4">
+          <div class="w-64 space-y-1.5 text-xs">
+            <div class="flex justify-between text-[#F7F4ED]/70">
+              <span>Subtotal:</span>
+              <span class="font-mono tabular-nums">${{ inv.subtotal.toLocaleString() }}</span>
+            </div>
+            @if (inv.discountAmount > 0) {
+              <div class="flex justify-between text-emerald-400">
+                <span>Discount Privilege:</span>
+                <span class="font-mono tabular-nums">-${{ inv.discountAmount.toLocaleString() }}</span>
+              </div>
+            }
+            <div class="flex justify-between text-[#F7F4ED]/70">
+              <span>Armored Delivery & Escrow:</span>
+              <span class="text-[#C8A45D]">Complimentary</span>
+            </div>
+            <div class="pt-2 border-t border-white/10 flex justify-between text-sm font-bold text-white">
+              <span>Total Settled:</span>
+              <span class="text-[#C8A45D] font-mono tabular-nums">${{ inv.total.toLocaleString() }} USD</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 flex justify-end">
+          <button (click)="closeInvoice()" class="px-6 py-2 rounded-lg bg-[#C8A45D] text-[#090909] font-bold text-xs uppercase">
+            Close Invoice
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

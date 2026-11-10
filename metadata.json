@@ -1,0 +1,6 @@
+{
+  "name": "Peachy Holding Enterprise",
+  "description": "Excellence Beyond Expectations. Official luxury enterprise platform uniting luxury mobility, haute horlogerie, five-star wellness sanctuary, global logistics, digital assets, and lifestyle concierge.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

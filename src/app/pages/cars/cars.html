@@ -1,0 +1,166 @@
+<div class="bg-[#090909] text-[#F7F4ED] min-h-screen pb-24 relative">
+  <!-- Page Header with Prominent, Highly Visible Fleet of Luxury Cars Background -->
+  <section class="relative py-28 border-b border-[#C8A45D]/30 overflow-hidden bg-black">
+    <!-- Extremely Visible Fleet of Luxury Cars Photographic Background -->
+    <div class="absolute inset-0 z-0">
+      <img 
+        src="/images/fleet_luxury_cars.jpg" 
+        alt="Peachy Executive Fleet of Luxury Cars - Rolls-Royce, Bentley, Bugatti, Lamborghini" 
+        class="w-full h-full object-cover object-center filter brightness-105 contrast-105" />
+      <!-- High visibility subtle gradient overlay ensuring text legibility while keeping the fleet vividly visible -->
+      <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/45 to-black/70"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#090909] via-transparent to-black/60"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl space-y-4">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#C8A45D] bg-black/85 text-[11px] uppercase tracking-widest text-[#DFBF7A] font-semibold backdrop-blur-md shadow-lg">
+          <mat-icon class="text-xs text-[#C8A45D]">directions_car</mat-icon>
+          <span>Division 01 · Executive Mobility Fleet</span>
+        </div>
+        <h1 class="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-[#F7F4ED] drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+          Luxury Car Rental & <span class="gold-gradient-text">Executive Mobility</span>
+        </h1>
+        <p class="text-sm sm:text-base text-[#F7F4ED] leading-relaxed drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)] font-medium bg-black/40 px-5 py-2.5 rounded-xl backdrop-blur-sm border border-white/10">
+          From the sovereign tranquility of the Rolls-Royce Phantom and Cullinan to the thunderous velocity of the Bugatti Chiron and Lamborghini Revuelto. Twenty distinct executive motorcars curated for dignitaries, corporate executives, and VIP motorcades.
+        </p>
+      </div>
+
+      <!-- Sample Pricing & Verification Disclaimer Banner (Mandatory Prompt Requirement) -->
+      <div class="mt-8 p-4 rounded-xl bg-black/80 border border-[#C8A45D]/50 flex items-start gap-3 text-xs text-[#DFBF7A] backdrop-blur-md shadow-xl max-w-3xl">
+        <mat-icon class="text-base text-[#C8A45D] shrink-0 mt-0.5">info</mat-icon>
+        <div>
+          <strong class="text-[#F7F4ED] block">Official Rate Notice:</strong>
+          All listed rates are illustrative sample editable prices and do not constitute guaranteed live quotations. Final availability, security deposits, and armed escort logistics are verified and confirmed by enterprise concierge prior to vehicle handover.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter & Search Controls Bar (Inline, non-floating) -->
+  <section class="bg-[#0c0c0c] border-b border-white/10 py-5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <!-- Search Input -->
+      <div class="w-full md:w-80">
+        <input 
+          type="text" 
+          [formControl]="searchQuery"
+          placeholder="Search 20 vehicles (e.g. Phantom, Urus, Bugatti)..." 
+          class="w-full px-4 py-2.5 rounded-xl bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none" />
+      </div>
+
+      <!-- Filters Row -->
+      <div class="w-full md:w-auto flex flex-wrap items-center gap-3 text-xs">
+        <span class="text-[#F7F4ED]/50 uppercase tracking-wider text-[10px]">Filter Maker:</span>
+        <select 
+          [value]="selectedManufacturer()"
+          (change)="selectedManufacturer.set($any($event.target).value)"
+          class="px-3 py-2 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none">
+          @for (m of manufacturers(); track m) {
+            <option [value]="m">{{ m }}</option>
+          }
+        </select>
+
+        <button 
+          (click)="selectedChauffeurOnly.set(!selectedChauffeurOnly())"
+          class="px-3 py-2 rounded-lg border text-xs font-medium transition-colors"
+          [class.bg-[#C8A45D]/20]="selectedChauffeurOnly()"
+          [class.border-[#C8A45D]]="selectedChauffeurOnly()"
+          [class.text-[#C8A45D]]="selectedChauffeurOnly()"
+          [class.border-white/10]="!selectedChauffeurOnly()"
+          [class.text-[#F7F4ED]/70]="!selectedChauffeurOnly()">
+          Chauffeur Available Only
+        </button>
+
+        <span class="text-[11px] text-[#F7F4ED]/40 tabular-nums ml-auto md:ml-2">
+          {{ filteredVehicles().length }} of 20 vehicles
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 20 Luxury Vehicles Grid -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (car of filteredVehicles(); track car.id) {
+        <div class="luxury-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+          <div>
+            <!-- Vehicle Image & Status with Error Fallback -->
+            <div class="relative h-64 bg-black/70 overflow-hidden">
+              <img 
+                [src]="car.image" 
+                [alt]="car.name + ' - ' + car.manufacturer" 
+                (error)="$any($event.target).src = '/images/fleet_luxury_cars.jpg'"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute top-3 left-3 px-3 py-1 rounded bg-black/85 backdrop-blur-md border border-[#C8A45D]/40 text-[10px] uppercase tracking-wider text-[#DFBF7A] font-bold shadow">
+                {{ car.manufacturer }} · {{ car.modelYear }}
+              </div>
+              <div class="absolute top-3 right-3 px-2.5 py-1 rounded bg-black/85 backdrop-blur-md text-[11px] font-bold shadow" [class.text-emerald-400]="car.status === 'Available'" [class.text-amber-400]="car.status !== 'Available'">
+                {{ car.status }}
+              </div>
+            </div>
+
+            <!-- Vehicle Details -->
+            <div class="p-6 space-y-4">
+              <div>
+                <h3 class="font-serif text-2xl font-bold text-[#F7F4ED]">{{ car.name }}</h3>
+                <p class="text-xs text-[#F7F4ED]/70 leading-relaxed mt-2 line-clamp-2">
+                  {{ car.description }}
+                </p>
+              </div>
+
+              <!-- Specifications Matrix -->
+              <div class="grid grid-cols-2 gap-2 p-3 rounded-xl bg-[#161616] border border-white/5 text-[11px]">
+                <div><span class="text-[#F7F4ED]/50">Engine:</span> <strong class="text-[#F7F4ED] block">{{ car.fuelType }}</strong></div>
+                <div><span class="text-[#F7F4ED]/50">Transmission:</span> <strong class="text-[#F7F4ED] block">{{ car.transmission }}</strong></div>
+                <div><span class="text-[#F7F4ED]/50">Seating:</span> <strong class="text-[#F7F4ED] block">{{ car.seats }} Passengers</strong></div>
+                <div>
+                  <span class="text-[#F7F4ED]/50">Chauffeur:</span> 
+                  <strong class="block" [class.text-[#C8A45D]]="car.chauffeurAvailable" [class.text-[#F7F4ED]/60]="!car.chauffeurAvailable">
+                    {{ car.chauffeurAvailable ? 'Available' : 'Self-Drive VIP' }}
+                  </strong>
+                </div>
+              </div>
+
+              <!-- Rate Breakdown (Daily, Weekly, Monthly) -->
+              <div class="space-y-1 text-xs border-t border-white/5 pt-3">
+                <div class="flex items-center justify-between">
+                  <span class="text-[#F7F4ED]/60">Daily Rate (Sample):</span>
+                  <span class="font-serif font-bold text-base text-[#C8A45D] tabular-nums">
+                    @if (car.dailyPrice) {
+                      ${{ car.dailyPrice.toLocaleString() }}
+                    } @else {
+                      Request Quote
+                    }
+                  </span>
+                </div>
+                @if (car.weeklyPrice) {
+                  <div class="flex items-center justify-between text-[11px] text-[#F7F4ED]/50">
+                    <span>Weekly Privilege Rate:</span>
+                    <span class="tabular-nums font-mono text-[#F7F4ED]/80">${{ car.weeklyPrice.toLocaleString() }}</span>
+                  </div>
+                }
+                @if (car.monthlyPrice) {
+                  <div class="flex items-center justify-between text-[11px] text-[#F7F4ED]/50">
+                    <span>Monthly Executive Contract:</span>
+                    <span class="tabular-nums font-mono text-[#F7F4ED]/80">${{ car.monthlyPrice.toLocaleString() }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Footer -->
+          <div class="p-6 pt-0">
+            <button 
+              (click)="openBooking(car)"
+              class="w-full py-3 rounded-xl bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#C8A45D]/15">
+              <mat-icon class="text-base">calendar_today</mat-icon>
+              <span>Book Vehicle Reservation</span>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
+</div>

@@ -1,0 +1,80 @@
+/* Global Styles for PEACHY HOLDING ENTERPRISE */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --gold: #C8A45D;
+    --gold-light: #DFBF7A;
+    --gold-dark: #9E7D37;
+    --obsidian: #090909;
+    --charcoal: #161616;
+    --surface: #202020;
+    --ivory: #F7F4ED;
+  }
+
+  body {
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #090909;
+    color: #F7F4ED;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-serif {
+    font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+  }
+
+  .font-display {
+    font-family: 'Playfair Display', Georgia, serif;
+  }
+}
+
+/* Custom luxury utility classes */
+.gold-gradient-text {
+  background: linear-gradient(135deg, #DFBF7A 0%, #C8A45D 50%, #9E7D37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gold-gradient-bg {
+  background: linear-gradient(135deg, #DFBF7A 0%, #C8A45D 50%, #9E7D37 100%);
+}
+
+.gold-border {
+  border-color: rgba(200, 164, 93, 0.25);
+}
+
+.gold-border-glow {
+  border-color: rgba(200, 164, 93, 0.5);
+  box-shadow: 0 0 25px -5px rgba(200, 164, 93, 0.2);
+}
+
+.luxury-card {
+  background-color: #121212;
+  border: 1px solid rgba(200, 164, 93, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-card:hover {
+  border-color: rgba(200, 164, 93, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #090909;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #282828;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C8A45D;
+}

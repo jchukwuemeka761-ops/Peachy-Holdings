@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" fill="none" class="peachy-enterprise-logo">
+  <defs>
+    <!-- Crisp White Circular Backplate for maximum contrast on any background -->
+    <filter id="cleanShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.3" />
+    </filter>
+
+    <!-- Vibrant Tangerine / Sunset Orange 3D Sail Gradient (Matches User's Reference) -->
+    <radialGradient id="vibrantOrangeRadial" cx="65%" cy="35%" r="70%">
+      <stop offset="0%" stop-color="#FF9D2E" />
+      <stop offset="35%" stop-color="#FF6B00" />
+      <stop offset="70%" stop-color="#EA5200" />
+      <stop offset="100%" stop-color="#B83200" />
+    </radialGradient>
+
+    <!-- Ultra-Glossy Black 3D Gradient for the Letter P -->
+    <linearGradient id="glossyBlackP" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#404040" />
+      <stop offset="25%" stop-color="#242424" />
+      <stop offset="60%" stop-color="#111111" />
+      <stop offset="100%" stop-color="#020202" />
+    </linearGradient>
+
+    <!-- Glossy Fin 1 Gradient -->
+    <linearGradient id="finGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4A4A4A" />
+      <stop offset="40%" stop-color="#202020" />
+      <stop offset="100%" stop-color="#050505" />
+    </linearGradient>
+
+    <!-- Glossy Fin 2 Gradient -->
+    <linearGradient id="finGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3A3A3A" />
+      <stop offset="50%" stop-color="#141414" />
+      <stop offset="100%" stop-color="#000000" />
+    </linearGradient>
+  </defs>
+
+  <!-- Crisp Pure White Circular Medallion Background with Gold/White Ring so the Logo is 100% visible on dark navbars -->
+  <circle cx="250" cy="250" r="235" fill="#FFFFFF" stroke="#C8A45D" stroke-width="6" filter="url(#cleanShadow)" />
+
+  <g transform="translate(42, 38)">
+    <!-- 1. The Dynamic Smooth Orange Curved Sail Wing on the Left -->
+    <path d="M 140 370 
+             C 70 330, 20 250, 25 160 
+             C 30 85, 80 25, 160 0 
+             C 185 -5, 215 -5, 235 -2
+             C 175 12, 130 55, 95 110
+             C 60 165, 60 255, 105 325
+             C 115 342, 128 358, 140 370 Z" 
+          fill="url(#vibrantOrangeRadial)" />
+
+    <!-- 2. Dual Sleek Speed Fins Above the P -->
+    <!-- Left Curved Fin with Pure White Separation Gap -->
+    <path d="M 160 50 
+             C 145 90, 148 130, 155 146 
+             L 196 146 
+             C 188 120, 185 85, 178 50 
+             Z" 
+          fill="url(#finGrad1)" />
+
+    <!-- Right Sleek Fin -->
+    <path d="M 198 32 
+             C 192 70, 195 115, 204 146 
+             L 248 146 
+             C 255 95, 248 60, 250 32 
+             Z" 
+          fill="url(#finGrad2)" />
+
+    <!-- 3. The Bold Glossy Black Capital 'P' -->
+    <!-- Outer Body of 'P' -->
+    <path d="M 155 162 
+             L 245 162 
+             C 300 162, 335 195, 335 245 
+             C 335 295, 300 328, 245 328 
+             L 200 328 
+             L 200 380 
+             L 155 380 
+             Z" 
+          fill="url(#glossyBlackP)" />
+
+    <!-- Inner Counter/Cutout of 'P' (Pure White to match medallion) -->
+    <path d="M 200 205 
+             L 235 205 
+             C 265 205, 285 220, 285 245 
+             C 285 270, 265 285, 235 285 
+             L 200 285 
+             Z" 
+          fill="#FFFFFF" />
+  </g>
+</svg>

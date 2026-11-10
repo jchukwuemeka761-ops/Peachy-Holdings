@@ -1,0 +1,180 @@
+<div class="bg-[#090909] text-[#F7F4ED] min-h-screen pb-24">
+  <!-- Page Header -->
+  <section class="relative py-20 border-b border-[#C8A45D]/20 overflow-hidden bg-gradient-to-b from-[#141414] to-[#090909]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#C8A45D]/40 bg-black/60 text-[11px] uppercase tracking-widest text-[#C8A45D]">
+          Division 05 · Institutional Crypto Advisory
+        </div>
+        <h1 class="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-[#F7F4ED]">
+          Digital Assets & <span class="gold-gradient-text">Market Intelligence</span>
+        </h1>
+        <p class="text-sm text-[#F7F4ED]/75 leading-relaxed">
+          Providing sovereign institutions, corporate treasuries, and high-net-worth family offices with research, compliance frameworks, and digital asset macroeconomic analysis.
+        </p>
+      </div>
+
+      <!-- MANDATORY COMPLIANCE & RISK NOTICE (Prompt Requirement) -->
+      <div class="mt-8 p-5 rounded-2xl bg-[#1a140d] border border-[#C8A45D]/40 text-xs text-[#DFBF7A] space-y-2">
+        <div class="flex items-center gap-2 font-bold text-[#F7F4ED]">
+          <mat-icon class="text-[#C8A45D]">shield</mat-icon>
+          <span>IMPORTANT REGULATORY & COMPLIANCE NOTICE:</span>
+        </div>
+        <p class="leading-relaxed text-[#F7F4ED]/80">
+          PEACHY HOLDING ENTERPRISE operates this division strictly for informational, educational, and business advisory purposes. We do not provide unauthorized cryptocurrency custody, exchange execution, deposit gathering, or money transmission. We will never request client private keys, passwords, or seed phrases. Any future execution capabilities will strictly be delivered in partnership with fully licensed, tier-1 regulated banking and custodian institutions.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKET RADAR: ALL 9 ASSETS -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+    <div class="flex items-center justify-between mb-6">
+      <h3 class="font-serif text-2xl font-bold text-[#F7F4ED]">Major Digital Asset Intelligence (9 Protocols)</h3>
+      <span class="text-xs text-[#F7F4ED]/50">Sample Data Feed · Timestamp: Real-time cache</span>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (coin of assets; track coin.symbol) {
+        <div 
+          (click)="selectAsset(coin)"
+          class="luxury-card rounded-2xl p-6 cursor-pointer space-y-3 transition-all"
+          [class.border-[#C8A45D]]="selectedAsset()?.symbol === coin.symbol"
+          [class.bg-[#161616]]="selectedAsset()?.symbol === coin.symbol">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-[#202020] border border-white/10 flex items-center justify-center font-bold text-xs text-[#C8A45D]">
+                {{ coin.symbol.slice(0, 3) }}
+              </div>
+              <div>
+                <h4 class="font-bold text-sm text-white">{{ coin.name }}</h4>
+                <span class="text-[10px] text-[#F7F4ED]/50 font-mono">{{ coin.symbol }}</span>
+              </div>
+            </div>
+            <span class="text-xs font-semibold tabular-nums px-2 py-0.5 rounded" [class.bg-emerald-950/60]="coin.change24h >= 0" [class.text-emerald-400]="coin.change24h >= 0" [class.bg-red-950/60]="coin.change24h < 0" [class.text-red-400]="coin.change24h < 0">
+              {{ coin.change24h >= 0 ? '+' : '' }}{{ coin.change24h }}%
+            </span>
+          </div>
+
+          <div class="pt-2 border-t border-white/5 flex items-baseline justify-between">
+            <div class="font-serif font-bold text-2xl text-[#C8A45D] tabular-nums font-mono">
+              ${{ coin.priceUsd.toLocaleString() }}
+            </div>
+            <div class="text-[11px] text-[#F7F4ED]/50">
+              Cap: {{ coin.marketCapUsd }}
+            </div>
+          </div>
+
+          <p class="text-[11px] text-[#F7F4ED]/60 line-clamp-2 leading-relaxed">
+            {{ coin.description }}
+          </p>
+        </div>
+      }
+    </div>
+
+    <!-- Active Asset Deep Dive Card -->
+    @if (selectedAsset(); as active) {
+      <div class="mt-8 p-8 rounded-2xl bg-[#141414] border border-[#C8A45D]/30 space-y-4 animate-in fade-in">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
+          <div>
+            <span class="text-[10px] uppercase text-[#C8A45D] font-bold">Selected Protocol Architecture</span>
+            <h3 class="font-serif text-3xl font-bold text-white">{{ active.name }} ({{ active.symbol }})</h3>
+          </div>
+          <div class="text-right">
+            <div class="font-serif text-3xl font-bold text-[#C8A45D] tabular-nums font-mono">${{ active.priceUsd.toLocaleString() }}</div>
+            <div class="text-xs text-[#F7F4ED]/50">Circulating: {{ active.circulatingSupply }}</div>
+          </div>
+        </div>
+
+        <p class="text-xs text-[#F7F4ED]/80 leading-relaxed max-w-4xl">
+          {{ active.description }}
+        </p>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs pt-2">
+          <div class="p-3 rounded-lg bg-black/40 border border-white/5">
+            <span class="text-[10px] text-[#F7F4ED]/40 block">24H High</span>
+            <strong class="font-mono text-white">${{ active.high24h.toLocaleString() }}</strong>
+          </div>
+          <div class="p-3 rounded-lg bg-black/40 border border-white/5">
+            <span class="text-[10px] text-[#F7F4ED]/40 block">24H Low</span>
+            <strong class="font-mono text-white">${{ active.low24h.toLocaleString() }}</strong>
+          </div>
+          <div class="p-3 rounded-lg bg-black/40 border border-white/5">
+            <span class="text-[10px] text-[#F7F4ED]/40 block">24H Volume</span>
+            <strong class="font-mono text-white">{{ active.volume24hUsd }}</strong>
+          </div>
+          <div class="p-3 rounded-lg bg-black/40 border border-white/5">
+            <span class="text-[10px] text-[#F7F4ED]/40 block">Market Cap</span>
+            <strong class="font-mono text-white">{{ active.marketCapUsd }}</strong>
+          </div>
+        </div>
+      </div>
+    }
+  </section>
+
+  <!-- CORPORATE CONSULTATION & ADVISORY ENQUIRY FORM -->
+  <section class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+    <div class="luxury-card rounded-2xl p-8 sm:p-10 space-y-6">
+      <div class="text-center space-y-2 border-b border-white/10 pb-6">
+        <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">Institutional Advisory</div>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#F7F4ED]">Request Confidential Digital Consultation</h3>
+        <p class="text-xs text-[#F7F4ED]/60 max-w-md mx-auto">
+          Schedule a private briefing on sovereign custody models, macroeconomic digital treasury structures, and regulatory risk mitigation.
+        </p>
+      </div>
+
+      <form [formGroup]="consultationForm" (ngSubmit)="submitConsultation()" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Full Legal Name *</label>
+            <input type="text" formControlName="fullName" class="w-full px-3 py-2.5 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Institutional Profile *</label>
+            <select formControlName="institutionType" class="w-full px-3 py-2.5 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none">
+              <option value="High-Net-Worth Private Client">High-Net-Worth Private Client</option>
+              <option value="Family Office">Family Office / Sovereign Trustee</option>
+              <option value="Corporate Treasury">Corporate Treasury Division</option>
+              <option value="Institutional Fund">Institutional Fund / Asset Manager</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Corporate Email *</label>
+            <input type="email" formControlName="email" class="w-full px-3 py-2.5 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Direct Telephone *</label>
+            <input type="tel" formControlName="phone" class="w-full px-3 py-2.5 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Consultation Objective *</label>
+          <select formControlName="topics" class="w-full px-3 py-2.5 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none">
+            <option value="Portfolio Allocation Strategy & Regulatory Safeguards">Portfolio Allocation Strategy & Regulatory Safeguards</option>
+            <option value="Cold-Storage & Multi-Signature Custody Governance">Cold-Storage & Multi-Signature Custody Governance</option>
+            <option value="Cross-Border Enterprise Liquidity Consultation">Cross-Border Enterprise Liquidity Consultation</option>
+            <option value="Bespoke Private Client Briefing">Bespoke Private Client Briefing</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs uppercase tracking-wider text-[#F7F4ED]/80 mb-1">Specific Requirements or Briefing Notes</label>
+          <textarea formControlName="message" rows="3" placeholder="Provide any details regarding jurisdiction, asset scope, or timeline..." class="w-full px-3 py-2 rounded-lg bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none"></textarea>
+        </div>
+
+        <div class="pt-4 flex justify-end">
+          <button 
+            type="submit" 
+            [disabled]="consultationForm.invalid"
+            class="px-8 py-3 rounded-xl bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider transition-all disabled:opacity-40">
+            Submit Consultation Request
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,770 @@
+<!-- HERO SECTION: LIVE ANIMATED SLIDES (CARS, WATCHES, SPA) -->
+<section class="relative min-h-[96vh] flex items-center justify-center overflow-hidden bg-[#090909]">
+  <!-- Live Background Carousel Slides (EXTREMELY VISIBLE, VIBRANT, CINEMATIC) -->
+  <div class="absolute inset-0 z-0 overflow-hidden">
+    @for (slide of slides; track slide.id; let i = $index) {
+      <div 
+        class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+        [class.opacity-100]="currentSlideIndex() === i"
+        [class.opacity-0]="currentSlideIndex() !== i"
+        [class.pointer-events-auto]="currentSlideIndex() === i"
+        [class.pointer-events-none]="currentSlideIndex() !== i">
+        <!-- Crisp high-res image with subtle slow zoom for cinematic motion -->
+        <img 
+          [src]="slide.image" 
+          [alt]="slide.title + ' ' + slide.highlight" 
+          class="w-full h-full object-cover object-center transform transition-transform duration-[6000ms] ease-out"
+          [class.scale-105]="currentSlideIndex() === i"
+          [class.scale-100]="currentSlideIndex() !== i" />
+        
+        <!-- Subtle gradient scrim preserving extreme photographic visibility and text legibility -->
+        <div class="absolute inset-0 bg-gradient-to-t from-[#090909] via-black/35 to-black/30"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-black/40"></div>
+      </div>
+    }
+  </div>
+
+  <!-- Hero Content Overlay Container -->
+  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-24">
+    <!-- Active Slide Division Badge -->
+    <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border border-[#C8A45D]/60 bg-[#090909]/85 backdrop-blur-md mb-6 shadow-xl">
+      <span class="w-2 h-2 rounded-full bg-[#C8A45D] animate-ping"></span>
+      <span class="text-xs uppercase tracking-[0.25em] text-[#DFBF7A] font-bold">
+        {{ slides[currentSlideIndex()].category }}
+      </span>
+      <span class="text-white/40">|</span>
+      <span class="text-[11px] text-[#F7F4ED]/80 font-medium">
+        {{ slides[currentSlideIndex()].itemBadge }}
+      </span>
+    </div>
+
+    <!-- Main Headline with Golden Highlight -->
+    <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold tracking-tight text-[#F7F4ED] leading-[1.08] mb-6 drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)]">
+      {{ slides[currentSlideIndex()].title }} <span class="gold-gradient-text">{{ slides[currentSlideIndex()].highlight }}</span>
+    </h1>
+
+    <!-- Supporting text -->
+    <p class="text-sm sm:text-base md:text-lg text-[#F7F4ED] max-w-3xl mx-auto font-medium leading-relaxed mb-10 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)] bg-black/30 px-6 py-2 rounded-xl backdrop-blur-sm border border-white/5">
+      {{ slides[currentSlideIndex()].subtitle }}
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a 
+        [routerLink]="slides[currentSlideIndex()].ctaLink" 
+        class="w-full sm:w-auto px-8 py-4 rounded-xl bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-[0.2em] transition-all shadow-2xl shadow-[#C8A45D]/40 flex items-center justify-center gap-2 transform hover:-translate-y-0.5">
+        <span>{{ slides[currentSlideIndex()].ctaText }}</span>
+        <mat-icon class="text-base">arrow_forward</mat-icon>
+      </a>
+      <a 
+        routerLink="/admin" 
+        class="w-full sm:w-auto px-7 py-4 rounded-xl bg-[#090909]/90 hover:bg-[#1f1f1f] border border-[#C8A45D]/60 hover:border-[#C8A45D] text-[#F7F4ED] font-semibold text-xs uppercase tracking-[0.2em] transition-all backdrop-blur-md flex items-center justify-center gap-2 shadow-xl">
+        <mat-icon class="text-base text-[#C8A45D]">admin_panel_settings</mat-icon>
+        <span>OPERATIONS CONTROL CONSOLE</span>
+      </a>
+    </div>
+
+    <!-- Secondary Brand Statement below CTAs -->
+    <div class="mt-10 text-xs uppercase tracking-[0.3em] text-[#DFBF7A] font-semibold drop-shadow">
+      Excellence Beyond Expectations · One Enterprise. Multiple Possibilities.
+    </div>
+
+    <!-- Carousel Slide Indicators & Controls -->
+    <div class="mt-8 flex items-center justify-center gap-3">
+      <!-- Previous Slide Button -->
+      <button 
+        (click)="prevSlide()" 
+        aria-label="Previous Slide"
+        class="w-9 h-9 rounded-full bg-black/60 hover:bg-[#C8A45D] text-white hover:text-black border border-white/20 transition-all flex items-center justify-center backdrop-blur-md">
+        <mat-icon class="text-base">chevron_left</mat-icon>
+      </button>
+
+      <!-- Slide Indicator Dots with Labels -->
+      <div class="flex items-center gap-2">
+        @for (slide of slides; track slide.id; let i = $index) {
+          <button 
+            (click)="setSlide(i)"
+            [attr.aria-label]="'Go to slide ' + (i + 1)"
+            class="h-2.5 rounded-full transition-all duration-300"
+            [class.w-8]="currentSlideIndex() === i"
+            [class.w-2.5]="currentSlideIndex() !== i"
+            [class.bg-[#C8A45D]]="currentSlideIndex() === i"
+            [class.bg-white/40]="currentSlideIndex() !== i">
+          </button>
+        }
+      </div>
+
+      <!-- Next Slide Button -->
+      <button 
+        (click)="nextSlide()" 
+        aria-label="Next Slide"
+        class="w-9 h-9 rounded-full bg-black/60 hover:bg-[#C8A45D] text-white hover:text-black border border-white/20 transition-all flex items-center justify-center backdrop-blur-md">
+        <mat-icon class="text-base">chevron_right</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Gradient Fade to Next Section -->
+  <div class="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-[#090909] to-transparent pointer-events-none"></div>
+</section>
+
+<!-- SECTION 2: INTRODUCTION TO PEACHY HOLDING ENTERPRISE -->
+<section class="py-24 bg-[#090909] border-t border-[#C8A45D]/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-5 space-y-6">
+        <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">The Holding Philosophy</div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#F7F4ED] leading-tight">
+          Where Sovereign Craftsmanship Meets Modern Executive Agility
+        </h2>
+        <p class="text-sm text-[#F7F4ED]/70 leading-relaxed">
+          PEACHY HOLDING ENTERPRISE operates across distinct international luxury verticals, bringing together executive motorcars, rare Swiss horology, five-star holistic wellness, and secure global cargo transit.
+        </p>
+        <p class="text-sm text-[#F7F4ED]/70 leading-relaxed">
+          Headquartered with an international reach and grounded in discrete local execution—including our flagship Wellness Sanctuary in Umuahia, Abia State—we provide our private clients with unified governance, verified authenticity, and bespoke concierge discretion.
+        </p>
+
+        <div class="pt-4 grid grid-cols-3 gap-6 border-t border-white/10 text-center">
+          <div>
+            <div class="font-serif text-2xl sm:text-3xl font-bold text-[#C8A45D] tabular-nums">20+</div>
+            <div class="text-[11px] text-[#F7F4ED]/60 uppercase tracking-wider mt-1">Elite Vehicles</div>
+          </div>
+          <div>
+            <div class="font-serif text-2xl sm:text-3xl font-bold text-[#C8A45D] tabular-nums">110+</div>
+            <div class="text-[11px] text-[#F7F4ED]/60 uppercase tracking-wider mt-1">Haute Watches</div>
+          </div>
+          <div>
+            <div class="font-serif text-2xl sm:text-3xl font-bold text-[#C8A45D] tabular-nums">6</div>
+            <div class="text-[11px] text-[#F7F4ED]/60 uppercase tracking-wider mt-1">Divisions</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="space-y-4">
+          <div class="relative rounded-2xl overflow-hidden border border-[#C8A45D]/20 group">
+            <img src="/images/cars_flagship.jpg" alt="Luxury Fleet" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-5 flex flex-col justify-end">
+              <span class="text-[10px] uppercase tracking-widest text-[#C8A45D]">Division I</span>
+              <h4 class="font-serif text-lg font-bold">Executive Mobility & Fleet</h4>
+            </div>
+          </div>
+          <div class="relative rounded-2xl overflow-hidden border border-[#C8A45D]/20 group">
+            <img src="/images/spa_sanctuary.jpg" alt="Wellness Sanctuary" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-5 flex flex-col justify-end">
+              <span class="text-[10px] uppercase tracking-widest text-[#C8A45D]">Division III</span>
+              <h4 class="font-serif text-lg font-bold">Umuahia Wellness Sanctuary</h4>
+            </div>
+          </div>
+        </div>
+        <div class="space-y-4 sm:pt-8">
+          <div class="relative rounded-2xl overflow-hidden border border-[#C8A45D]/20 group">
+            <img src="/images/watches_vault.jpg" alt="Horology Showcase" class="w-full h-44 object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-5 flex flex-col justify-end">
+              <span class="text-[10px] uppercase tracking-widest text-[#C8A45D]">Division II</span>
+              <h4 class="font-serif text-lg font-bold">Haute Horlogerie Vault</h4>
+            </div>
+          </div>
+          <div class="relative rounded-2xl overflow-hidden border border-[#C8A45D]/20 group">
+            <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80" alt="Global Logistics" class="w-full h-56 object-cover group-hover:scale-105 transition-transform duration-500" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-5 flex flex-col justify-end">
+              <span class="text-[10px] uppercase tracking-widest text-[#C8A45D]">Division IV</span>
+              <h4 class="font-serif text-lg font-bold">Armored Logistics & Freight</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: ALL SIX BUSINESS DIVISIONS -->
+<section class="py-24 bg-[#0c0c0c] border-t border-[#C8A45D]/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+      <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">Enterprise Portfolio</div>
+      <h2 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight text-[#F7F4ED]">
+        Six Pillars of Distinction
+      </h2>
+      <p class="text-sm text-[#F7F4ED]/65">
+        Each division operates under sovereign standards of excellence, unified through one streamlined client account and administrative ecosystem.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <!-- 1. Luxury Cars -->
+      <div class="luxury-card rounded-2xl p-7 flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-[#1f1f1f] border border-[#C8A45D]/30 flex items-center justify-center text-[#C8A45D] group-hover:scale-110 transition-transform">
+            <mat-icon class="text-2xl">directions_car</mat-icon>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-widest text-[#C8A45D] font-semibold">Division 01</div>
+            <h3 class="font-serif text-2xl font-bold text-[#F7F4ED] mt-1">Luxury Cars & Mobility</h3>
+          </div>
+          <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+            Exclusive executive fleet of 20 high-prestige automobiles including Rolls-Royce Phantom, Cullinan, Lamborghini Revuelto, and Bugatti Chiron with chauffeur or self-drive privileges.
+          </p>
+          <ul class="space-y-1.5 text-xs text-[#F7F4ED]/60 pt-2 border-t border-white/5">
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> 20 Verified Supercars & Grand Tourers</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Armed Escort & Diplomatic Chauffeur</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Daily, Weekly & Monthly Contracts</li>
+          </ul>
+        </div>
+        <div class="pt-6">
+          <a routerLink="/luxury-cars" class="inline-flex items-center gap-2 text-xs font-bold text-[#C8A45D] uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+            <span>Explore Fleet</span>
+            <mat-icon class="text-sm">arrow_forward</mat-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- 2. Luxury Watches -->
+      <div class="luxury-card rounded-2xl p-7 flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-[#1f1f1f] border border-[#C8A45D]/30 flex items-center justify-center text-[#C8A45D] group-hover:scale-110 transition-transform">
+            <mat-icon class="text-2xl">watch</mat-icon>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-widest text-[#C8A45D] font-semibold">Division 02</div>
+            <h3 class="font-serif text-2xl font-bold text-[#F7F4ED] mt-1">Haute Horlogerie</h3>
+          </div>
+          <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+            Curated catalogue of over 110 distinct luxury timepieces from Patek Philippe, Rolex, Audemars Piguet, Richard Mille, Jacob & Co, Bugatti Timepieces, and Grand Seiko.
+          </p>
+          <ul class="space-y-1.5 text-xs text-[#F7F4ED]/60 pt-2 border-t border-white/5">
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> 110+ Mechanical & Complication Pieces</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Independent Authenticity Certification</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Direct Escrow & Allocation Enquiries</li>
+          </ul>
+        </div>
+        <div class="pt-6">
+          <a routerLink="/luxury-watches" class="inline-flex items-center gap-2 text-xs font-bold text-[#C8A45D] uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+            <span>View Catalogue</span>
+            <mat-icon class="text-sm">arrow_forward</mat-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- 3. Spa & Wellness -->
+      <div class="luxury-card rounded-2xl p-7 flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-[#1f1f1f] border border-[#C8A45D]/30 flex items-center justify-center text-[#C8A45D] group-hover:scale-110 transition-transform">
+            <mat-icon class="text-2xl">spa</mat-icon>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-widest text-[#C8A45D] font-semibold">Division 03</div>
+            <h3 class="font-serif text-2xl font-bold text-[#F7F4ED] mt-1">Spa & Wellness Sanctuary</h3>
+          </div>
+          <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+            Five-star wellness sanctuary located at Store 5, 53 Awolowo Street by Umuwaya Road, Umuahia. Featuring 15 distinct treatment suites, hydrotherapy pools, and infrared saunas.
+          </p>
+          <ul class="space-y-1.5 text-xs text-[#F7F4ED]/60 pt-2 border-t border-white/5">
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> 17 Specialized Spa & Holistic Therapies</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Couples Suites & Full-Day VIP Buyouts</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Umuahia, Abia State: +234 708 827 7884</li>
+          </ul>
+        </div>
+        <div class="pt-6">
+          <a routerLink="/spa-wellness" class="inline-flex items-center gap-2 text-xs font-bold text-[#C8A45D] uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+            <span>Discover Sanctuary</span>
+            <mat-icon class="text-sm">arrow_forward</mat-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- 4. Logistics -->
+      <div class="luxury-card rounded-2xl p-7 flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-[#1f1f1f] border border-[#C8A45D]/30 flex items-center justify-center text-[#C8A45D] group-hover:scale-110 transition-transform">
+            <mat-icon class="text-2xl">local_shipping</mat-icon>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-widest text-[#C8A45D] font-semibold">Division 04</div>
+            <h3 class="font-serif text-2xl font-bold text-[#F7F4ED] mt-1">Logistics & Freight</h3>
+          </div>
+          <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+            Local express courier and cross-border freight coordination. Specializing in high-value cargo, bonded customs handling, cold-chain medical freight, and live tracking.
+          </p>
+          <ul class="space-y-1.5 text-xs text-[#F7F4ED]/60 pt-2 border-t border-white/5">
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Real Multi-Stage Shipment Tracking</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Armored Escort for Precious Cargo</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Air & Maritime Freight Consolidation</li>
+          </ul>
+        </div>
+        <div class="pt-6">
+          <a routerLink="/logistics" class="inline-flex items-center gap-2 text-xs font-bold text-[#C8A45D] uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+            <span>Track & Ship</span>
+            <mat-icon class="text-sm">arrow_forward</mat-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- 5. Digital Assets -->
+      <div class="luxury-card rounded-2xl p-7 flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-[#1f1f1f] border border-[#C8A45D]/30 flex items-center justify-center text-[#C8A45D] group-hover:scale-110 transition-transform">
+            <mat-icon class="text-2xl">account_balance</mat-icon>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-widest text-[#C8A45D] font-semibold">Division 05</div>
+            <h3 class="font-serif text-2xl font-bold text-[#F7F4ED] mt-1">Digital Assets & Advisory</h3>
+          </div>
+          <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+            Institutional digital asset education, macroeconomic market insights, and compliant private wealth consultation covering Bitcoin, Ethereum, and major protocols.
+          </p>
+          <ul class="space-y-1.5 text-xs text-[#F7F4ED]/60 pt-2 border-t border-white/5">
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Strict Regulatory Compliance (No Unauthorized Custody)</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Market Intelligence & Research Insights</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Corporate Digital Consultation</li>
+          </ul>
+        </div>
+        <div class="pt-6">
+          <a routerLink="/digital-assets" class="inline-flex items-center gap-2 text-xs font-bold text-[#C8A45D] uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+            <span>Market Advisory</span>
+            <mat-icon class="text-sm">arrow_forward</mat-icon>
+          </a>
+        </div>
+      </div>
+
+      <!-- 6. Lifestyle & Concierge -->
+      <div class="luxury-card rounded-2xl p-7 flex flex-col justify-between group">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-xl bg-[#1f1f1f] border border-[#C8A45D]/30 flex items-center justify-center text-[#C8A45D] group-hover:scale-110 transition-transform">
+            <mat-icon class="text-2xl">diamond</mat-icon>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-widest text-[#C8A45D] font-semibold">Division 06</div>
+            <h3 class="font-serif text-2xl font-bold text-[#F7F4ED] mt-1">Lifestyle & Concierge</h3>
+          </div>
+          <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+            Private aviation routing, Mediterranean yacht charters, closed-door auction sourcing, personal styling, and executive delegation hospitality.
+          </p>
+          <ul class="space-y-1.5 text-xs text-[#F7F4ED]/60 pt-2 border-t border-white/5">
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Private Jet & Helicopter Charters</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> Rare Item Sourcing & Geneva Escort</li>
+            <li class="flex items-center gap-2"><span class="text-[#C8A45D]">·</span> VIP Global Access Protocols</li>
+          </ul>
+        </div>
+        <div class="pt-6">
+          <a routerLink="/lifestyle-concierge" class="inline-flex items-center gap-2 text-xs font-bold text-[#C8A45D] uppercase tracking-wider group-hover:translate-x-1 transition-transform">
+            <span>Bespoke Concierge</span>
+            <mat-icon class="text-sm">arrow_forward</mat-icon>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: FEATURED LUXURY VEHICLES (SAMPLE EDITABLE PRICES) -->
+<section class="py-24 bg-[#090909] border-t border-[#C8A45D]/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+      <div>
+        <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">Executive Mobility</div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#F7F4ED] mt-1">Featured Fleet Highlights</h2>
+        <p class="text-xs text-[#F7F4ED]/60 mt-1">
+          Representative sample of our 20 premium vehicles. All rates are illustrative and subject to concierge verification.
+        </p>
+      </div>
+      <a routerLink="/luxury-cars" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#C8A45D]/40 text-[#C8A45D] hover:bg-[#C8A45D]/10 text-xs font-bold uppercase tracking-wider transition-colors shrink-0">
+        <span>View Full 20 Vehicles</span>
+        <mat-icon class="text-base">arrow_forward</mat-icon>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      @for (car of state.vehicles().slice(0, 3); track car.id) {
+        <div class="luxury-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+          <div>
+            <div class="relative h-60 overflow-hidden bg-black/60">
+              <img [src]="car.image" [alt]="car.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute top-3 left-3 px-3 py-1 rounded bg-black/75 backdrop-blur-md border border-[#C8A45D]/30 text-[10px] uppercase tracking-wider text-[#C8A45D] font-bold">
+                {{ car.manufacturer }}
+              </div>
+              <div class="absolute top-3 right-3 px-2.5 py-1 rounded bg-black/75 backdrop-blur-md text-[11px] font-semibold text-emerald-400">
+                {{ car.status }}
+              </div>
+            </div>
+
+            <div class="p-6 space-y-3">
+              <h3 class="font-serif text-2xl font-bold text-[#F7F4ED]">{{ car.name }}</h3>
+              <p class="text-xs text-[#F7F4ED]/70 line-clamp-2 leading-relaxed">
+                {{ car.description }}
+              </p>
+
+              <div class="grid grid-cols-2 gap-2 text-[11px] text-[#F7F4ED]/60 pt-2 border-t border-white/5">
+                <div><span>Engine:</span> <strong class="text-[#F7F4ED]">{{ car.fuelType }}</strong></div>
+                <div><span>Transmission:</span> <strong class="text-[#F7F4ED]">{{ car.transmission }}</strong></div>
+                <div><span>Capacity:</span> <strong class="text-[#F7F4ED]">{{ car.seats }} Passengers</strong></div>
+                <div><span>Chauffeur:</span> <strong class="text-[#C8A45D]">{{ car.chauffeurAvailable ? 'Available' : 'Self-Drive' }}</strong></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="p-6 pt-0 border-t border-white/5 flex items-center justify-between gap-4">
+            <div>
+              <div class="text-[10px] text-[#F7F4ED]/50 uppercase tracking-wider">Sample Daily Rate</div>
+              <div class="text-xl font-serif font-bold text-[#C8A45D] tabular-nums">
+                @if (car.dailyPrice) {
+                  ${{ car.dailyPrice.toLocaleString() }}
+                } @else {
+                  Upon Request
+                }
+              </div>
+            </div>
+            <button 
+              (click)="openCarModal(car)"
+              class="px-5 py-2.5 rounded-lg bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-md">
+              <mat-icon class="text-base">key</mat-icon>
+              <span>Book</span>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: FEATURED HAUTE HORLOGERIE TIMEPIECES -->
+<section class="py-24 bg-[#0c0c0c] border-t border-[#C8A45D]/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
+      <div>
+        <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">Haute Horlogerie Vault</div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#F7F4ED] mt-1">Distinguished Mechanical Timepieces</h2>
+        <p class="text-xs text-[#F7F4ED]/60 mt-1">
+          Explore icons from Patek Philippe, Rolex, Audemars Piguet, and Richard Mille. From our 110+ catalogue.
+        </p>
+      </div>
+      <a routerLink="/luxury-watches" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#C8A45D]/40 text-[#C8A45D] hover:bg-[#C8A45D]/10 text-xs font-bold uppercase tracking-wider transition-colors shrink-0">
+        <span>View All 110+ Watches</span>
+        <mat-icon class="text-base">arrow_forward</mat-icon>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      @for (watch of state.watches().slice(0, 4); track watch.id) {
+        <div class="luxury-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+          <div class="relative h-64 bg-black/50 p-4 flex items-center justify-center border-b border-white/5">
+            <img [src]="watch.image" [alt]="watch.model" class="w-full h-full object-cover rounded-lg group-hover:scale-105 transition-transform duration-500" />
+            
+            <button 
+              (click)="state.toggleWishlist(watch.id)" 
+              class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 border border-white/10 flex items-center justify-center text-white hover:text-[#C8A45D] transition-colors"
+              title="Save to Wishlist">
+              <mat-icon class="text-base">{{ state.isInWishlist(watch.id) ? 'favorite' : 'favorite_border' }}</mat-icon>
+            </button>
+          </div>
+
+          <div class="p-5 space-y-2 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="text-[10px] uppercase tracking-widest text-[#C8A45D] font-bold">{{ watch.brand }}</div>
+              <h3 class="font-serif text-lg font-bold text-[#F7F4ED] truncate">{{ watch.model }}</h3>
+              <p class="text-[11px] text-[#F7F4ED]/50 truncate">Ref: {{ watch.referenceNumber }} · {{ watch.movementType }}</p>
+            </div>
+
+            <div class="pt-3 border-t border-white/5 flex items-center justify-between">
+              <div>
+                <span class="text-sm font-bold text-[#C8A45D] tabular-nums">
+                  @if (watch.priceUsd) {
+                    ${{ watch.priceUsd.toLocaleString() }}
+                  } @else {
+                    Quote on Request
+                  }
+                </span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button 
+                  (click)="openWatchModal(watch)" 
+                  class="p-2 rounded bg-white/5 hover:bg-white/10 text-[#F7F4ED] transition-colors"
+                  title="View Specs">
+                  <mat-icon class="text-sm">visibility</mat-icon>
+                </button>
+                @if (watch.priceUsd) {
+                  <button 
+                    (click)="addToCart(watch)" 
+                    class="p-2 rounded bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold transition-colors"
+                    title="Add to Cart">
+                    <mat-icon class="text-sm">add_shopping_cart</mat-icon>
+                  </button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: SPA & WELLNESS SANCTUARY SPOTLIGHT (UMUAHIA FACILITY) -->
+<section class="py-24 bg-[#090909] border-t border-[#C8A45D]/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div class="lg:col-span-6 relative rounded-2xl overflow-hidden border border-[#C8A45D]/30 group">
+        <img src="/images/spa_sanctuary.jpg" alt="Peachy Spa & Wellness Sanctuary" class="w-full h-[480px] object-cover group-hover:scale-105 transition-transform duration-700" />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent p-8 flex flex-col justify-end">
+          <span class="text-xs uppercase tracking-widest text-[#C8A45D] font-bold">Five-Star Sanctuary</span>
+          <h3 class="font-serif text-3xl font-bold text-white mt-1">Umuahia Wellness Haven</h3>
+          <p class="text-xs text-white/80 mt-2 max-w-md">
+            Store 5, 53 Awolowo Street by Umuwaya Road, Umuahia, Abia State 900103, Nigeria
+          </p>
+          <div class="pt-3 flex items-center gap-2 text-xs text-[#C8A45D]">
+            <mat-icon class="text-base">call</mat-icon>
+            <strong>Direct Reservations: +234 708 827 7884</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-6 space-y-6">
+        <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">Division 03 · Holistic Rejuvenation</div>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold tracking-tight text-[#F7F4ED] leading-tight">
+          An Exclusive Sanctuary for Mind, Body & Soul
+        </h2>
+        <p class="text-sm text-[#F7F4ED]/75 leading-relaxed">
+          The PEACHY Spa & Wellness Sanctuary combines Italian marble architecture, tranquil hydrotherapy pools, and Finnish saunas with traditional botanical therapies. Operated by master certified therapists under uncompromising European clinical hygiene standards.
+        </p>
+
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div class="p-4 rounded-xl bg-[#141414] border border-[#C8A45D]/15">
+            <mat-icon class="text-[#C8A45D]">hot_tub</mat-icon>
+            <h4 class="font-serif text-base font-bold mt-2">Hydrotherapy Vitality</h4>
+            <p class="text-[11px] text-[#F7F4ED]/60 mt-1">Saline mineral pool with underwater air loungers.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-[#141414] border border-[#C8A45D]/15">
+            <mat-icon class="text-[#C8A45D]">favorite</mat-icon>
+            <h4 class="font-serif text-base font-bold mt-2">Couples VIP Suites</h4>
+            <p class="text-[11px] text-[#F7F4ED]/60 mt-1">Private steam shower, jacuzzi soak, and champagne turn-down.</p>
+          </div>
+        </div>
+
+        <div class="pt-2 flex flex-wrap gap-4 items-center">
+          <a routerLink="/spa-wellness" class="px-6 py-3.5 rounded-xl bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-2">
+            <span>Book Spa Treatment</span>
+            <mat-icon class="text-base">calendar_month</mat-icon>
+          </a>
+          <a routerLink="/contact" class="px-6 py-3.5 rounded-xl border border-white/20 hover:border-[#C8A45D] text-xs font-semibold uppercase tracking-wider transition-colors">
+            Directions & Map
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: GLOBAL LOGISTICS & INSTANT TRACKING STRIP -->
+<section class="py-20 bg-[#0d0d0d] border-t border-[#C8A45D]/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-5 space-y-3">
+        <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">Division 04 · High-Value Transit</div>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-[#F7F4ED]">
+          Secure Cargo, Express Freight & Armored Courier
+        </h2>
+        <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+          From local express dispatch across Nigerian commerce corridors to bonded transatlantic diplomatic cargo. Enter your tracking number below to track an active consignment in real time.
+        </p>
+      </div>
+
+      <!-- Quick Tracker Box -->
+      <div class="lg:col-span-7 bg-[#141414] p-6 rounded-2xl border border-[#C8A45D]/25 shadow-xl space-y-4">
+        <div class="text-xs uppercase tracking-wider text-[#C8A45D] font-semibold flex items-center gap-2">
+          <mat-icon class="text-base">radar</mat-icon>
+          <span>Live Consignment Tracking Engine</span>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <input 
+            type="text" 
+            [formControl]="quickTrackingCode"
+            placeholder="Enter tracking code (e.g. PHE-8827-010)" 
+            class="flex-1 px-4 py-3 rounded-xl bg-[#1e1e1e] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none uppercase tracking-wider" />
+          <button 
+            (click)="trackShipment()" 
+            class="px-6 py-3 rounded-xl bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider transition-colors shrink-0 flex items-center justify-center gap-2">
+            <mat-icon class="text-base">search</mat-icon>
+            Track Status
+          </button>
+        </div>
+
+        @if (trackingResult()) {
+          <div class="p-3 rounded-lg bg-black/60 border border-[#C8A45D]/30 text-xs text-[#DFBF7A] animate-in fade-in">
+            {{ trackingResult() }}
+          </div>
+        }
+
+        <div class="text-[11px] text-[#F7F4ED]/50 flex items-center justify-between pt-1">
+          <span>Sample active test tracking: <strong class="text-white">PHE-8827-010</strong> or <strong class="text-white">PHE-4391-772</strong></span>
+          <a routerLink="/logistics" class="text-[#C8A45D] hover:underline">Full Logistics Portal &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: DIGITAL ASSETS MARKET PULSE (COMPLIANT INFORMATIONAL) -->
+<section class="py-16 bg-[#090909] border-t border-[#C8A45D]/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between mb-8 gap-4">
+      <div>
+        <div class="text-[10px] uppercase tracking-[0.25em] text-[#C8A45D] font-bold">Institutional Intelligence</div>
+        <h3 class="font-serif text-xl sm:text-2xl font-bold text-[#F7F4ED]">Digital Asset Market Radar</h3>
+      </div>
+      <div class="text-[11px] text-[#F7F4ED]/50">
+        Informational advisory only · No unauthorized custody or financial transmission.
+      </div>
+    </div>
+
+    <!-- Live Market Ticker Row -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      @for (coin of digitalAssets.slice(0, 6); track coin.symbol) {
+        <div class="p-3.5 rounded-xl bg-[#141414] border border-white/5 hover:border-[#C8A45D]/30 transition-all">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-white">{{ coin.symbol }}</span>
+            <span class="text-[10px] font-semibold tabular-nums" [class.text-emerald-400]="coin.change24h >= 0" [class.text-red-400]="coin.change24h < 0">
+              {{ coin.change24h >= 0 ? '+' : '' }}{{ coin.change24h }}%
+            </span>
+          </div>
+          <div class="text-sm font-semibold text-[#DFBF7A] tabular-nums mt-1 font-mono">
+            ${{ coin.priceUsd.toLocaleString() }}
+          </div>
+          <div class="text-[10px] text-[#F7F4ED]/40 truncate mt-0.5">{{ coin.name }}</div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9: WHY CHOOSE US & VALUE PROPOSITIONS -->
+<section class="py-24 bg-[#0c0c0c] border-t border-[#C8A45D]/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+      <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">The Enterprise Advantage</div>
+      <h2 class="font-serif text-3xl sm:text-5xl font-bold text-[#F7F4ED]">Why Discerning Clients Choose PEACHY</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="luxury-card rounded-2xl p-8 space-y-4">
+        <mat-icon class="text-3xl text-[#C8A45D]">verified</mat-icon>
+        <h3 class="font-serif text-xl font-bold">Uncompromising Authenticity</h3>
+        <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+          Every mechanical timepiece is independently inspected and certified. Our automotive fleet undergoes rigorous technical telemetry inspections before and after each deployment.
+        </p>
+      </div>
+
+      <div class="luxury-card rounded-2xl p-8 space-y-4">
+        <mat-icon class="text-3xl text-[#C8A45D]">hub</mat-icon>
+        <h3 class="font-serif text-xl font-bold">Unified Enterprise Portal</h3>
+        <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+          No fragmented third parties. One client dashboard connects your vehicle reservations, horological orders, spa appointments, and freight consignments with single-point accountability.
+        </p>
+      </div>
+
+      <div class="luxury-card rounded-2xl p-8 space-y-4">
+        <mat-icon class="text-3xl text-[#C8A45D]">shield</mat-icon>
+        <h3 class="font-serif text-xl font-bold">Discretion & Sovereign Security</h3>
+        <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+          We protect client confidentiality with institutional protocol. From armored diplomatic movements to non-disclosure client relations, your affairs remain confidential.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10: TESTIMONIALS FROM EXECUTIVE CLIENTS -->
+<section class="py-24 bg-[#090909] border-t border-[#C8A45D]/15">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center max-w-3xl mx-auto mb-16 space-y-3">
+      <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">Client Testimonials</div>
+      <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#F7F4ED]">Endorsements of Excellence</h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="luxury-card rounded-2xl p-8 space-y-4 flex flex-col justify-between">
+        <p class="text-xs italic text-[#F7F4ED]/80 leading-relaxed">
+          "The deployment of the Rolls-Royce Phantom and executive security escort for our bilateral delegation was executed with flawless precision. PEACHY HOLDING sets the standard for African corporate luxury."
+        </p>
+        <div class="pt-4 border-t border-white/5">
+          <div class="font-serif font-bold text-sm text-[#F7F4ED]">Ambassador K. Adeleke</div>
+          <div class="text-[11px] text-[#C8A45D]">International Diplomatic Envoy, Abuja</div>
+        </div>
+      </div>
+
+      <div class="luxury-card rounded-2xl p-8 space-y-4 flex flex-col justify-between">
+        <p class="text-xs italic text-[#F7F4ED]/80 leading-relaxed">
+          "Acquiring a Patek Philippe 5711 through PEACHY was as seamless as visiting Place Vendôme. Armored courier delivered the timepiece with complete factory provenance and unblemished documentation."
+        </p>
+        <div class="pt-4 border-t border-white/5">
+          <div class="font-serif font-bold text-sm text-[#F7F4ED]">Dr. Victor O. Mansur</div>
+          <div class="text-[11px] text-[#C8A45D]">Private Collector & Real Estate Director, Lagos</div>
+        </div>
+      </div>
+
+      <div class="luxury-card rounded-2xl p-8 space-y-4 flex flex-col justify-between">
+        <p class="text-xs italic text-[#F7F4ED]/80 leading-relaxed">
+          "The Wellness Sanctuary in Umuahia is an architectural oasis. The couples hydrotherapy suite and massage protocols rival the world-class spas of Zurich and Dubai. An extraordinary addition to Eastern Nigeria."
+        </p>
+        <div class="pt-4 border-t border-white/5">
+          <div class="font-serif font-bold text-sm text-[#F7F4ED]">Lady Chinyere Nwosu</div>
+          <div class="text-[11px] text-[#C8A45D]">Executive Trustee, Umuahia</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 11: NEWSLETTER & PRIVATE CLIENT DISPATCH -->
+<section class="py-20 bg-[#0c0c0c] border-t border-[#C8A45D]/15">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+    <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">The Private Dispatch</div>
+    <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#F7F4ED]">
+      Receive Exclusive Allocations & Fleet Updates
+    </h2>
+    <p class="text-xs sm:text-sm text-[#F7F4ED]/70 max-w-xl mx-auto">
+      Subscribe for confidential notifications on newly acquired horological masterworks, seasonal wellness sanctuary protocols, and executive aviation schedules.
+    </p>
+
+    <form [formGroup]="newsletterForm" (ngSubmit)="subscribeNewsletter()" class="max-w-md mx-auto flex flex-col sm:flex-row gap-3">
+      <input 
+        type="email" 
+        formControlName="email"
+        placeholder="Enter your executive email" 
+        class="flex-1 px-4 py-3 rounded-xl bg-[#181818] border border-white/10 text-xs text-white focus:border-[#C8A45D] focus:outline-none" />
+      <button 
+        type="submit" 
+        [disabled]="newsletterForm.invalid"
+        class="px-6 py-3 rounded-xl bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-40 shrink-0">
+        Subscribe
+      </button>
+    </form>
+
+    @if (newsletterSubscribed()) {
+      <div class="text-xs text-emerald-400 font-medium">
+        Thank you. You have been added to the PEACHY Private Client dispatch list.
+      </div>
+    }
+  </div>
+</section>
+
+<!-- SECTION 12: CONTACT CTA BANNER -->
+<section class="py-16 bg-gradient-to-r from-[#141414] via-[#1a160d] to-[#141414] border-t border-b border-[#C8A45D]/25">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
+    <div>
+      <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#F7F4ED]">Ready to Experience the Extraordinary?</h3>
+      <p class="text-xs text-[#F7F4ED]/70 mt-1">
+        Speak directly with our executive concierge or visit our flagship wellness facility in Umuahia.
+      </p>
+    </div>
+    <div class="flex items-center gap-4 shrink-0">
+      <a href="tel:+2347088277884" class="px-6 py-3 rounded-xl bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-2">
+        <mat-icon class="text-base">call</mat-icon>
+        <span>+234 708 827 7884</span>
+      </a>
+      <a routerLink="/contact" class="px-6 py-3 rounded-xl border border-white/20 hover:border-[#C8A45D] text-xs font-semibold uppercase tracking-wider text-[#F7F4ED] transition-colors">
+        Contact Form
+      </a>
+    </div>
+  </div>
+</section>

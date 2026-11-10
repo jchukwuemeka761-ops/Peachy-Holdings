@@ -1,0 +1,218 @@
+<div class="bg-[#090909] text-[#F7F4ED] min-h-screen pb-24">
+  <!-- Sanctuary Hero Section with Generated Spa Image -->
+  <section class="relative min-h-[75vh] flex items-center justify-center overflow-hidden bg-[#090909]">
+    <div class="absolute inset-0 z-0">
+      <img src="/images/spa_sanctuary.jpg" alt="Peachy Spa & Wellness Sanctuary Interior" class="w-full h-full object-cover scale-105" />
+      <div class="absolute inset-0 bg-gradient-to-t from-[#090909] via-[#090909]/60 to-[#090909]/40"></div>
+    </div>
+
+    <div class="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center py-20 space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#C8A45D]/40 bg-black/60 text-[11px] uppercase tracking-widest text-[#C8A45D]">
+        Division 03 · Five-Star Wellness Sanctuary
+      </div>
+      <h1 class="font-serif text-4xl sm:text-6xl font-bold tracking-tight text-[#F7F4ED]">
+        Peachy Spa & <span class="gold-gradient-text">Wellness Sanctuary</span>
+      </h1>
+      <p class="font-serif text-lg italic text-[#DFBF7A]">
+        Restorative Holistic Rejuvenation in an Atmosphere of Five-Star Elegance
+      </p>
+      <p class="text-xs sm:text-sm text-[#F7F4ED]/80 max-w-2xl mx-auto leading-relaxed pt-2">
+        Combining Italian marble architecture, tranquil indoor water features, warm champagne lighting, and European therapeutic protocols for the ultimate sanctuary experience.
+      </p>
+
+      <!-- Facility Location Badge -->
+      <div class="pt-4 inline-flex flex-col sm:flex-row items-center gap-3 p-4 rounded-xl bg-black/80 backdrop-blur-md border border-[#C8A45D]/30 text-xs">
+        <div class="flex items-center gap-2 text-[#C8A45D]">
+          <mat-icon class="text-base">location_on</mat-icon>
+          <span class="font-bold text-white">Store 5, 53 Awolowo Street by Umuwaya Road, Umuahia, Abia State 900103</span>
+        </div>
+        <span class="hidden sm:inline text-white/30">|</span>
+        <div class="flex items-center gap-2 text-[#DFBF7A]">
+          <mat-icon class="text-base">call</mat-icon>
+          <a href="tel:+2347088277884" class="font-bold hover:underline">+234 708 827 7884</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 15 Distinct Spa Spaces / Photographs Section -->
+  <section class="py-20 border-b border-white/5 bg-[#0c0c0c]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12 space-y-2">
+        <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">15 Specialized Facilities</div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#F7F4ED]">
+          Architectural Wellness Chambers
+        </h2>
+        <p class="text-xs text-[#F7F4ED]/60">
+          Tour our 15 dedicated treatment suites, hydrotherapy vitality pools, infrared saunas, and clinical skin studios.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        @for (space of spaces; track space.id) {
+          <div class="luxury-card rounded-xl overflow-hidden group">
+            <div class="relative h-44 overflow-hidden bg-black/60">
+              <img [src]="space.image" [alt]="space.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent p-3 flex flex-col justify-end">
+                <span class="text-[9px] uppercase tracking-wider text-[#C8A45D] font-bold">Facility {{ space.id }}</span>
+                <h4 class="font-serif text-sm font-bold text-white leading-tight truncate">{{ space.name }}</h4>
+              </div>
+            </div>
+            <div class="p-3">
+              <p class="text-[10px] text-[#F7F4ED]/60 line-clamp-2 leading-relaxed">{{ space.description }}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- All 17 Spa Treatments & Menu Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+    <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+      <div>
+        <div class="text-xs uppercase tracking-[0.25em] text-[#C8A45D] font-bold">Treatment Menu</div>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#F7F4ED]">17 Holistic & Clinical Protocols</h2>
+        <p class="text-xs text-[#F7F4ED]/60 mt-1">
+          Sample editable rates shown. All treatments conducted by certified professionals under clinical hygiene standards.
+        </p>
+      </div>
+
+      <!-- Categories Filter -->
+      <div class="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none">
+        @for (cat of categories; track cat) {
+          <button 
+            (click)="selectedCategory.set(cat)"
+            class="px-3 py-1.5 rounded-lg text-xs whitespace-nowrap transition-colors"
+            [class.bg-[#C8A45D]]="selectedCategory() === cat"
+            [class.text-[#090909]]="selectedCategory() === cat"
+            [class.font-bold]="selectedCategory() === cat"
+            [class.bg-[#161616]]="selectedCategory() !== cat"
+            [class.text-[#F7F4ED]/70]="selectedCategory() !== cat">
+            {{ cat }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Treatments Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      @for (tr of treatments(); track tr.id) {
+        @if (selectedCategory() === 'All' || tr.category === selectedCategory()) {
+          <div class="luxury-card rounded-2xl overflow-hidden flex flex-col justify-between group">
+            <div>
+              <div class="relative h-52 bg-black/60 overflow-hidden">
+                <img [src]="tr.image" [alt]="tr.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute top-3 left-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md text-[10px] text-[#C8A45D] font-bold uppercase tracking-wider">
+                  {{ tr.category }}
+                </div>
+                <div class="absolute top-3 right-3 px-2.5 py-1 rounded bg-black/80 backdrop-blur-md text-xs font-semibold text-white">
+                  {{ tr.durationMinutes }} Min
+                </div>
+              </div>
+
+              <div class="p-6 space-y-3">
+                <h3 class="font-serif text-xl font-bold text-[#F7F4ED]">{{ tr.name }}</h3>
+                <p class="text-xs text-[#F7F4ED]/70 leading-relaxed line-clamp-3">
+                  {{ tr.description }}
+                </p>
+
+                <!-- Includes List -->
+                <div class="pt-2 border-t border-white/5 space-y-1 text-[11px] text-[#F7F4ED]/60">
+                  @for (inc of tr.includes; track inc) {
+                    <div class="flex items-center gap-1.5 truncate">
+                      <span class="text-[#C8A45D]">·</span>
+                      <span>{{ inc }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+
+            <!-- Price & Book Button -->
+            <div class="p-6 pt-0 border-t border-white/5 flex items-center justify-between gap-4">
+              <div>
+                <span class="text-[10px] uppercase text-[#F7F4ED]/40 block">Treatment Fee</span>
+                <span class="font-serif font-bold text-xl text-[#C8A45D] tabular-nums">${{ tr.priceUsd }}</span>
+              </div>
+              <button 
+                (click)="openBooking(tr)"
+                class="px-5 py-2.5 rounded-lg bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-md">
+                <mat-icon class="text-base">spa</mat-icon>
+                <span>Reserve</span>
+              </button>
+            </div>
+          </div>
+        }
+      }
+    </div>
+  </section>
+
+  <!-- SECTION 4: PROFESSIONAL SPA & WELLNESS EQUIPMENT ACQUISITION -->
+  <section class="py-20 border-t border-white/5 bg-[#0a0a0a]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#C8A45D]/40 bg-black/60 text-[11px] uppercase tracking-widest text-[#C8A45D] mb-3">
+            Commercial & Private Sanctuary Equipment
+          </div>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#F7F4ED]">
+            Professional Spa <span class="gold-gradient-text">Equipment & Technology</span>
+          </h2>
+          <p class="text-xs text-[#F7F4ED]/60 max-w-2xl mt-1">
+            Engineered in Germany, Switzerland, and Italy. We supply and commission clinical cryotherapy chambers, hydrotherapy vitality beds, and medical-grade aesthetic equipment for private estates and luxury resorts.
+          </p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs text-[#DFBF7A] bg-[#1c180e] border border-[#C8A45D]/30 px-3 py-1.5 rounded-lg flex items-center gap-1.5">
+            <mat-icon class="text-sm">verified</mat-icon>
+            <span>Direct Manufacturer Warranty Included</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        @for (eq of equipment(); track eq.id) {
+          <div class="luxury-card rounded-2xl overflow-hidden flex flex-col justify-between group hover:border-[#C8A45D]/60 transition-all duration-300">
+            <div>
+              <div class="relative h-60 overflow-hidden bg-black/80">
+                <img [src]="eq.image" [alt]="eq.name" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute top-3 left-3 bg-black/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] uppercase font-bold text-[#DFBF7A] border border-[#C8A45D]/40">
+                  {{ eq.category }}
+                </div>
+                <div class="absolute bottom-3 right-3 bg-black/80 px-2.5 py-1 rounded text-[10px] font-mono text-white/80">
+                  {{ eq.warrantyYears }} Yr Warranty
+                </div>
+              </div>
+
+              <div class="p-6 space-y-3">
+                <div class="text-[10px] uppercase text-[#C8A45D] font-bold tracking-wider">{{ eq.manufacturer }} · {{ eq.model }}</div>
+                <h3 class="font-serif text-xl font-bold text-[#F7F4ED]">{{ eq.name }}</h3>
+                <p class="text-xs text-[#F7F4ED]/70 leading-relaxed">
+                  {{ eq.description }}
+                </p>
+                <div class="pt-2 text-[11px] text-[#F7F4ED]/50 flex items-center justify-between">
+                  <span>In Stock: <strong class="text-white">{{ eq.stockCount }} units</strong></span>
+                  <span class="text-emerald-400 font-semibold">{{ eq.isAvailable ? 'Available for Commissioning' : 'Backorder Only' }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0 border-t border-white/5 flex items-center justify-between gap-4 mt-4">
+              <div>
+                <span class="text-[10px] uppercase text-[#F7F4ED]/40 block">Commercial Valuation</span>
+                <span class="font-serif font-bold text-2xl text-[#C8A45D] tabular-nums">${{ eq.priceUsd.toLocaleString() }}</span>
+              </div>
+              <a 
+                href="tel:+2347088277884"
+                class="px-4 py-2.5 rounded-lg bg-[#C8A45D] hover:bg-[#DFBF7A] text-[#090909] font-bold text-xs uppercase tracking-wider transition-colors flex items-center gap-1.5 shadow-md">
+                <mat-icon class="text-sm">call</mat-icon>
+                <span>Acquire / Inquire</span>
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+</div>
